@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:background="@drawable/racingbg">
+
+    <FrameLayout
+        android:id="@+id/startGameFrame"
+        android:layout_width="340dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+
+        <LinearLayout
+            android:id="@+id/startLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="top">
+
+
+            <TextView
+                android:id="@+id/carChase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Car Chase"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/scoreTableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginBottom="200sp"
+            android:background="@drawable/bg2">
+
+
+            <TextView
+                android:id="@+id/table"
+                android:layout_width="wrap_content"
+                android:layout_height="130dp"
+                android:text="High Score Table"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginTop="150dp">
+
+
+            <Button
+                android:id="@+id/hardButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/holo_green_light"
+                android:text="Start"
+                android:layout_marginTop="20dp"/>
+
+            <Button
+                android:id="@+id/quitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/darker_gray"
+                android:text="quit"
+                android:layout_marginTop="20dp"/>
+
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+
+</LinearLayout>
