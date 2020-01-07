@@ -11,7 +11,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -22,6 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import tyrantgit.explosionfield.ExplosionField;
+
 
 public class HardModeActivity extends AppCompatActivity implements SensorEventListener {
     //Frames
@@ -61,6 +61,7 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
     ExplosionField explosionField;
     //hit
     int hit=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

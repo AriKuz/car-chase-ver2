@@ -16,6 +16,8 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+import tyrantgit.explosionfield.ExplosionField;
+
 
 public class MainActivity extends AppCompatActivity {
     //Frames
@@ -49,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     private Button moveRight;
     private Button moveLeft;
 
+    //Animation
+    ExplosionField explosionField;
+
+
     //hit
     int hit=0;
 
@@ -79,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // High Score
-        settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        settings = getSharedPreferences("GAME_DATA2", Context.MODE_PRIVATE);
         highScore = settings.getInt("HIGH_SCORE", 0);
         highScoreLabel.setText("High Score : " + highScore);
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -118,36 +124,40 @@ public class MainActivity extends AppCompatActivity {
         coinY += 12;
         float coinCenterX = coinX + coin.getWidth() / 2;
         float coinCenterY = coinY + coin.getHeight() / 2;
-        int[] xPosArray = {10,380,750};
+        int[] carXPosArray = {0,210,460,650,850};
+        int[] coinXPosArray = {50,260,480,700,900};
         int randChoice=0, randChoice2 =0;
 
         if(hitCheck(coinCenterX, coinCenterY)){
+            SharedPreferences preferences = getSharedPreferences("scoreTable2", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor2 = preferences.edit();
+            editor2.putInt("lastScore2", score);
+            editor2.apply();
             coinY = frameHeight + 100;
             score += 10;
         }
 
         if(coinY > frameHeight){
             coinY = -100;
-            //   coinX = (float)Math.floor(Math.random()* (frameWidth - coin.getWidth()));
-            randChoice = (int)(Math.random()*3);
-            coinX = xPosArray[randChoice];
+            randChoice = (int)(Math.random()*5);
+            coinX = coinXPosArray[randChoice];
         }
         coin.setX(coinX);
         coin.setY(coinY);
 
         //Black
-
-
         blackY += 18;
         float blackCenterX = blackX + black.getWidth() / 2;
         float blackCenterY = blackY + black.getHeight() / 2;
+
+        explosionField = ExplosionField.attach2Window(this);
+
 
         if(hitCheck(blackCenterX, blackCenterY)) {
             blackY = frameHeight + 100;
             //Hearts down
             if(hit < 3) {
-                heartArray[hit++].setVisibility(View.INVISIBLE);
-                System.out.println(hit);
+                explosionField.explode(heartArray[hit++]);
             }
 
             if(hit == 3){
@@ -158,12 +168,12 @@ public class MainActivity extends AppCompatActivity {
         if(blackY > frameHeight){
             blackY = -100;
             //   coinX = (float)Math.floor(Math.random()* (frameWidth - coin.getWidth()));
-            randChoice2 = (int)(Math.random()*3);
+            randChoice2 = (int)(Math.random()*5);
             if(randChoice2 != randChoice)
-                blackX = xPosArray[randChoice2];
+                blackX = carXPosArray[randChoice2];
             else
                 randChoice2 = (int)(Math.random()*randChoice);
-            blackX = xPosArray[randChoice2];
+            blackX = carXPosArray[randChoice2];
         }
 
         black.setX(blackX);
@@ -173,29 +183,29 @@ public class MainActivity extends AppCompatActivity {
         moveLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playerX -= 370;
+                playerX -= 220;
             }
         });
 
         moveRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playerX += 370;
+                playerX += 220;
             }
         });
+
         //check player position
         if(playerX < 0){
-            playerX = 3;
+            playerX = -5;
         }
 
         if(frameWidth - playerSize < playerX){
-            playerX = frameWidth - playerSize - 7;
+            playerX = frameWidth - playerSize + 10;
         }
 
         player.setX(playerX);
         scoreLabel.setText("Score :  " + score);
     }
-
 
     public boolean hitCheck(float x, float y){
         if(playerX <= x && x<= playerX + playerSize  && playerY <= y && y<= frameHeight)
@@ -237,17 +247,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         finish();
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if(start_flag){
-            if(event.getAction() == MotionEvent.ACTION_DOWN)
-                action_flag = true;
-            else if(event.getAction() == MotionEvent.ACTION_UP)
-                action_flag = false;
-        }
-        return true;
     }
 
     public void startGame(View view){
