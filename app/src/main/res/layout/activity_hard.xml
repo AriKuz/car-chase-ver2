@@ -85,7 +85,7 @@
                 android:id="@+id/catchTheBall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Car Chase  - Hard mode"
+                android:text="Car Chase  - Sensor mode"
                 android:textSize="24sp"
                 android:background="@android:color/white"
                 android:layout_gravity="center"
