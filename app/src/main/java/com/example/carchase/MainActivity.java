@@ -3,7 +3,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout startLayout;
     //Images
     private ImageView player, black, coin, heart, heart2, heart3;
-    private Drawable imageBoxLeft,imageBoxRight;
     //Size
     private int playerSize;
     //Position
@@ -157,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if(blackY > frameHeight){
             blackY = -100;
-            //   coinX = (float)Math.floor(Math.random()* (frameWidth - coin.getWidth()));
             randChoice2 = (int)(Math.random()*5);
             if(randChoice2 != randChoice)
                 blackX = carXPosArray[randChoice2];
@@ -204,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gameOver(){
-        final Intent intent = new Intent(getApplicationContext(), GameStartActivity.class);
         timer.cancel();
         timer = null;
         isStarted = false;
@@ -230,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
         if (score > highScore) {
             highScore = score;
             highScoreLabel.setText("High Score : " + highScore);
-
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("HIGH_SCORE", highScore);
             editor.commit();

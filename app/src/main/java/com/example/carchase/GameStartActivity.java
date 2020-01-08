@@ -1,6 +1,5 @@
 package com.example.carchase;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,7 +23,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
@@ -48,12 +45,16 @@ public class GameStartActivity extends FragmentActivity implements OnMapReadyCal
     //location
     private static double latitudeCurrent;
     private static double longitudeCurrent;
-    public  Location userLocation;
-    private FusedLocationProviderClient client;
-    //
+    Location userLocation;
+    FusedLocationProviderClient client;
+    //Fragment
     public static SupportMapFragment mapFragment;
-
-
+    //Best players locations
+    private LatLng besti1;
+    private LatLng besti2;
+    private LatLng besti3;
+    //Request code
+    private static final int REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +82,9 @@ public class GameStartActivity extends FragmentActivity implements OnMapReadyCal
         hardButton = findViewById(R.id.hardButton);
         quitButton = findViewById(R.id.quitButton);
 
+        besti1 = new LatLng(32.107108, 34.791407);
+        besti2 = new LatLng(32.113064, 34.817666);
+        besti3 = new LatLng(32.320654, 34.846436);
 
 
         requestPermission();
@@ -88,7 +92,6 @@ public class GameStartActivity extends FragmentActivity implements OnMapReadyCal
         client= LocationServices.getFusedLocationProviderClient(GameStartActivity.this);
 
         if(ActivityCompat.checkSelfPermission(GameStartActivity.this, ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-      //      ActivityCompat.requestPermissions(this, new String[] {ACCESS_FINE_LOCATION}, 101);
             return;
         }
 
@@ -101,7 +104,7 @@ public class GameStartActivity extends FragmentActivity implements OnMapReadyCal
                     latitudeCurrent = location.getLatitude();
                     longitudeCurrent = location.getLongitude();
                     userLocation = location;
-                    Log.i("Print inside start","the location"+latitudeCurrent);
+                    Log.i("Print inside start","the location"+latitudeCurrent + " " + longitudeCurrent);
                 }
             }
         });
@@ -143,24 +146,21 @@ public class GameStartActivity extends FragmentActivity implements OnMapReadyCal
         bestScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LatLng best3 = new LatLng(32.107108, 34.791407);
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(best3, 14));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(besti3, 14));
             }
         });
 
         bestScore2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LatLng best2 = new LatLng(32.113064, 34.817666);
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(best2, 14));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(besti2, 14));
             }
         });
 
         bestScore3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LatLng best1 = new LatLng(32.107108, 34.791407);
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(best1, 14));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(besti1, 14));
             }
         });
 
@@ -195,18 +195,15 @@ public class GameStartActivity extends FragmentActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        LatLng best1 = new LatLng(32.107108, 34.791407);
-        LatLng best2 = new LatLng(32.113064, 34.817666);
-      //  LatLng best3 = new LatLng(32.320654, 34.846436);
-        LatLng best3 = new LatLng(32.320654, 34.846436);
 
-        map.addMarker(new MarkerOptions().position(best1).title("Best1"));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(best1, 14));
-        map.addMarker(new MarkerOptions().position(best2).title("Best2"));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(best2, 14));
-        map.addMarker(new MarkerOptions().position(best3).title("Best3"));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(best3, 14));
+        map.addMarker(new MarkerOptions().position(besti1).title("Best1"));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(besti1, 14));
+        map.addMarker(new MarkerOptions().position(besti2).title("Best2"));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(besti2, 14));
+        map.addMarker(new MarkerOptions().position(besti3).title("Best3"));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(besti3, 14));
     }
+
 
     private void requestPermission(){
         ActivityCompat.requestPermissions(GameStartActivity.this, new String[]{ACCESS_FINE_LOCATION},1);

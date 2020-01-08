@@ -3,7 +3,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -18,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +30,6 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
     private LinearLayout startLayout;
     //Images
     private ImageView player, black, coin, heart, heart2, heart3;
-    private Drawable imageBoxLeft,imageBoxRight;
     //Size
     private int playerSize;
     //Position
@@ -140,7 +137,6 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
 
         if(coinY > frameHeight){
             coinY = -100;
-            //   coinX = (float)Math.floor(Math.random()* (frameWidth - coin.getWidth()));
             randChoice = (int)(Math.random()*5);
             coinX = coinXPosArray[randChoice];
         }
@@ -148,8 +144,6 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
         coin.setY(coinY);
 
         //Black
-
-
         blackY += 18;
         float blackCenterX = blackX + black.getWidth() / 2;
         float blackCenterY = blackY + black.getHeight() / 2;
@@ -171,7 +165,6 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
         }
         if(blackY > frameHeight){
             blackY = -100;
-            //   coinX = (float)Math.floor(Math.random()* (frameWidth - coin.getWidth()));
             randChoice2 = (int)(Math.random()*5);
             if(randChoice2 != randChoice)
                 blackX = carXPosArray[randChoice2];
@@ -219,7 +212,6 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
     }
 
     public void gameOver(){
-        final Intent intent = new Intent(getApplicationContext(), GameStartActivity.class);
         timer.cancel();
         timer = null;
         isStarted = false;
@@ -287,8 +279,6 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
         heart3.setVisibility(View.VISIBLE);
         black.setVisibility(View.VISIBLE);
         coin.setVisibility(View.VISIBLE);
-    //    moveLeft.setVisibility(View.VISIBLE);
-    //    moveRight.setVisibility(View.VISIBLE);
 
         timeCount = 0;
         score = 0;
@@ -339,6 +329,5 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 }
