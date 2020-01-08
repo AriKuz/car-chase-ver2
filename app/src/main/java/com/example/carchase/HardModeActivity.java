@@ -17,6 +17,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +36,6 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
     //Size
     private int playerSize;
     //Position
-
     private float playerX, playerY;
     private float blackX, blackY;
     private float coinX, coinY;
@@ -46,9 +47,7 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
     private Timer timer;
     private Handler handler = new Handler();
     //Status
-    private boolean start_flag = false;
-    private boolean action_flag = false;
-
+    private boolean isStarted = false;
     //Buttons
     private Button startButton;
     private Button quitButton;
@@ -79,9 +78,6 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
 
         scoreLabel = findViewById(R.id.scoreLabel);
         highScoreLabel = findViewById(R.id.highScoreLabel);
-        imageBoxLeft =  getResources().getDrawable(R.drawable.box_left);
-        imageBoxRight =  getResources().getDrawable(R.drawable.box_right);
-
         startButton = findViewById(R.id.startButton);
         quitButton = findViewById(R.id.quitButton);
         moveLeft = findViewById(R.id.moveLeft);
@@ -97,25 +93,18 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
         settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
         highScore = settings.getInt("HIGH_SCORE", 0);
         highScoreLabel.setText("High Score : " + highScore);
-
-
-
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startGame(v);
             }
         });
-
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     public void changePos(){
@@ -233,7 +222,7 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
         final Intent intent = new Intent(getApplicationContext(), GameStartActivity.class);
         timer.cancel();
         timer = null;
-        start_flag = false;
+        isStarted = false;
 
         // Before showing startLayout, sleep 1 second.
         try {
@@ -254,6 +243,7 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
 
         // Update High Score
         if (score > highScore) {
+            Toast.makeText(getApplicationContext(), "New High Score!!!", Toast.LENGTH_SHORT).show();
             highScore = score;
             highScoreLabel.setText("High Score : " + highScore);
 
@@ -261,13 +251,12 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
             editor.putInt("HIGH_SCORE", highScore);
             editor.commit();
         }
-
         finish();
     }
 
 
     public void startGame(View view){
-        start_flag = true;
+        isStarted = true;
         startLayout.setVisibility(View.INVISIBLE);
 
         if(frameHeight == 0){
@@ -309,7 +298,7 @@ public class HardModeActivity extends AppCompatActivity implements SensorEventLi
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(start_flag){
+                if(isStarted){
                     handler.post(new Runnable() {
                         @Override
                         public void run() {

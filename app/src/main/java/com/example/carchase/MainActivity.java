@@ -6,13 +6,14 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     //Size
     private int playerSize;
     //Position
-
     private float playerX, playerY;
     private float blackX, blackY;
     private float coinX, coinY;
@@ -42,19 +42,14 @@ public class MainActivity extends AppCompatActivity {
     private Timer timer;
     private Handler handler = new Handler();
     //Status
-    private boolean start_flag = false;
-    private boolean action_flag = false;
-
+    private boolean isStarted = false;
     //Buttons
     private Button startButton;
     private Button quitButton;
     private Button moveRight;
     private Button moveLeft;
-
     //Animation
     ExplosionField explosionField;
-
-
     //hit
     int hit=0;
 
@@ -74,15 +69,11 @@ public class MainActivity extends AppCompatActivity {
 
         scoreLabel = findViewById(R.id.scoreLabel);
         highScoreLabel = findViewById(R.id.highScoreLabel);
-        imageBoxLeft =  getResources().getDrawable(R.drawable.box_left);
-        imageBoxRight =  getResources().getDrawable(R.drawable.box_right);
-
         startButton = findViewById(R.id.startButton);
         quitButton = findViewById(R.id.quitButton);
         moveLeft = findViewById(R.id.moveLeft);
         moveRight = findViewById(R.id.moveRight);
         final Intent intent = new Intent(getApplicationContext(), GameStartActivity.class);
-
 
         // High Score
         settings = getSharedPreferences("GAME_DATA2", Context.MODE_PRIVATE);
@@ -101,9 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     public void changePos(){
@@ -129,12 +117,14 @@ public class MainActivity extends AppCompatActivity {
         int randChoice=0, randChoice2 =0;
 
         if(hitCheck(coinCenterX, coinCenterY)){
-            SharedPreferences preferences = getSharedPreferences("scoreTable2", Context.MODE_PRIVATE);
+            SharedPreferences preferences = getSharedPreferences(getString(R.string.scoreTable), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor2 = preferences.edit();
-            editor2.putInt("lastScore2", score);
+            editor2.putInt(getString(R.string.lastScore2), score);
             editor2.apply();
             coinY = frameHeight + 100;
             score += 10;
+            if(score > highScore)
+                Toast.makeText(getApplicationContext(), "New High Score!!!", Toast.LENGTH_SHORT).show();
         }
 
         if(coinY > frameHeight){
@@ -217,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         final Intent intent = new Intent(getApplicationContext(), GameStartActivity.class);
         timer.cancel();
         timer = null;
-        start_flag = false;
+        isStarted = false;
 
         // Before showing startLayout, sleep 1 second.
         try {
@@ -245,12 +235,11 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt("HIGH_SCORE", highScore);
             editor.commit();
         }
-
         finish();
     }
 
     public void startGame(View view){
-        start_flag = true;
+        isStarted = true;
         startLayout.setVisibility(View.INVISIBLE);
 
         if(frameHeight == 0){
@@ -292,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(start_flag){
+                if(isStarted){
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
